@@ -16,7 +16,7 @@ function Home() {
       <div className="grid md:space-x-[200px] space-x-[100px] overflow-x-hidden">
         <SideBar />
         <div>
-          <HomeHead openModal={openModal} setOpenModal={setOpenModal} />
+          <HomeHead  setOpenModal={setOpenModal} />
           <div className="flex md:flex-row flex-col">
             <div className="flex flex-col">
               <Records />

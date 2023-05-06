@@ -72,14 +72,14 @@ export default function Login() {
               <h3 className="text-2xl font-bold text-center">
                 Enter your Info
               </h3>
-              <label className="text-dBlack font-bold text-left">Email</label>
+              <label htmlFor="email" className="text-dBlack font-bold text-left">Email</label>
               <input
                 type="email"
                 placeholder="Email"
                 onChange={(e) => setEmail(e.target.value)}
                 className="rounded-full flex-1  p-2 border-solid border-2 border-dBlack"
               />
-              <label className="text-dBlack font-bold text-left">
+              <label htmlFor="password" className="text-dBlack font-bold text-left">
                 Password
               </label>
               <input

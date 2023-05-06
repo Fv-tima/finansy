@@ -3,9 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import google from "../assets/images/Google.png";
 import fb from "../assets/images/Fbk.png";
 import apple from "../assets/images/Apple.png";
-import { addDoc } from "firebase/firestore";
+import { getDoc, setDoc, doc, getDocs } from "firebase/firestore";
+import { db } from "../firebase-config";
 import { useAuth } from "../context/AuthContext";
 import { useCol } from "../context/ColContext";
+import { updateProfile } from "firebase/auth";
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -28,7 +30,7 @@ export default function SignUp() {
     setDefCur,
     country,
     setCountry,
-    fullname,
+    fullName,
     setFullname,
     email,
     setEmail,
@@ -37,22 +39,46 @@ export default function SignUp() {
     profileCollectionRef,
   } = useCol();
 
+  async function createUserDocFromAuth(currentUser) {
+    const userDocRef = doc(db, "users", currentUser?.uid);
+    console.log(userDocRef);
+    const userSnapshot = await getDoc(userDocRef);
+    if (!userSnapshot.exists()) {
+      const createdAt = new Date();
+      const Lang = lang;
+      const Name = fullName;
+      const Country = country;
+      const Email = email;
+      const DefCur = defCur;
+      const ExcCur = excCur;
+      const ExcRate = excRate;
+      const Password = password;
+
+      try {
+        await setDoc(userDocRef, {
+          Lang,
+          Name,
+          Country,
+          Email,
+          DefCur,
+          ExcCur,
+          ExcRate,
+          Password,
+          createdAt,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    return userDocRef;
+  }
+
   async function register(e) {
     e.preventDefault();
     try {
-      await signUp(email, password);
-
-      await addDoc(profileCollectionRef, {
-        Lang: lang,
-        Fullname: fullname,
-        Country: country,
-        Email: email,
-        DefCur: defCur,
-        ExcCur: excCur,
-        ExcRate: excRate,
-        Password: password,
-        userId: currentUser?.uid,
-      });
+      const { response } = await signUp(email, password);
+      console.log(currentUser?.uid);
+      const userDocRef = await createUserDocFromAuth(response);
       navigate("/home");
     } catch (err) {
       console.log(err.message);
@@ -94,34 +120,50 @@ export default function SignUp() {
             <div className="ml-10 flex flex-col w-3/3  text-center space-y-4 md:w-1/3 sm:w-2/3">
               <div className="flex flex-col justify-start p-8  shadow-lg rounded-xl space-y-3">
                 <h3 className="text-2xl font-bold">Personal Info</h3>
-                <label className="text-dBlack font-bold text-left">Name</label>
+                <label
+                  htmlFor="name"
+                  className="text-dBlack font-bold text-left"
+                >
+                  Name
+                </label>
                 <input
                   type="text"
+                  required
                   className="rounded-full p-2 flex-1 p-2 border-solid border-2 border-dBlack text-dBlack "
                   onChange={(e) => {
                     setFullname(e.target.value);
                   }}
                 />
-                <label className="text-dBlack font-bold text-left">Email</label>
+                <label
+                  htmlFor="email"
+                  className="text-dBlack font-bold text-left"
+                >
+                  Email
+                </label>
                 <input
                   type="text"
+                  required
                   className="rounded-full flex-1  p-2 border-solid border-2 border-dBlack text-dBlack"
                   onChange={(e) => {
                     setEmail(e.target.value);
                   }}
                 />
-                <label className="text-dBlack font-bold text-left">
+                <label
+                  htmlFor="password"
+                  className="text-dBlack font-bold text-left"
+                >
                   Password
                 </label>
                 <input
                   type="text"
+                  required
                   className="rounded-full p-2 flex-1 p-2 border-solid border-2 border-dBlack text-dBlack "
                   onChange={(e) => {
                     setPassword(e.target.value);
                   }}
                 />
                 <label
-                  for="countries"
+                  htmlFor="countries"
                   className="text-dBlack font-bold text-left"
                 >
                   Country
@@ -133,7 +175,7 @@ export default function SignUp() {
                     setCountry(e.target.value);
                   }}
                 >
-                  <option selected>Choose a country</option>
+                  <option defaultValue>Choose a country</option>
                   <option value="Ghana">Ghana</option>
                   <option value="Nigeria">Nigeria</option>
                   <option value="Venezuela">Venezuela</option>
@@ -143,18 +185,24 @@ export default function SignUp() {
             <div className="flex flex-col w-3/3  text-center space-y-4 md:w-1/3 sm:w-2/3">
               <div className="flex flex-col justify-start p-8  shadow-lg rounded-xl space-y-3">
                 <h3 className="text-2xl font-bold text-start">Preferences</h3>
-                <label className="text-dBlack font-bold text-left">
+                <label
+                  htmlFor="Default currency"
+                  className="text-dBlack font-bold text-left"
+                >
                   Default Currency
                 </label>
                 <input
                   type="text"
-                  className="rounded-full flex-1  p-2 border-solid border-2 border-dBlack"
+                  className="rounded-full flex-1 text-dBlack p-2 border-solid border-2 border-dBlack"
                   value="USD"
                   onChange={(e) => {
                     setDefCur(e.target.value);
                   }}
                 />
-                <label className="text-dBlack font-bold text-left">
+                <label
+                  htmlFor="Exchange currency"
+                  className="text-dBlack font-bold text-left"
+                >
                   Exchange currency
                 </label>
                 <select
@@ -164,27 +212,33 @@ export default function SignUp() {
                     setExcCur(e.target.value);
                   }}
                 >
-                  <option selected>Choose currency</option>
+                  <option defaultValue>Choose currency</option>
                   <option value="Cedis">Ghana</option>
                   <option value="Naira">Nigeria</option>
                   <option value="Venesuelan Bolivar">Venezuela</option>
                 </select>
-                <label className="text-dBlack font-bold text-left">
+                <label
+                  htmlFor="Exchange rate"
+                  className="text-dBlack font-bold text-left"
+                >
                   Exchange Rate
                 </label>
                 <input
                   type="text"
-                  className="rounded-full p-2 flex-1 p-2 border-solid border-2 border-dBlack "
+                  className="rounded-full p-2 text-dBlack flex-1 p-2 border-solid border-2 border-dBlack "
                   onChange={(e) => {
                     setExcRate(e.target.value);
                   }}
                 />
-                <label className="text-dBlack font-bold text-left">
+                <label
+                  htmlFor="language"
+                  className="text-dBlack font-bold text-left"
+                >
                   Language
                 </label>
                 <input
                   type="text"
-                  className="rounded-full p-2 flex-1 p-2 border-solid border-2 border-dBlack "
+                  className="rounded-full p-2 text-dBlack flex-1 p-2 border-solid border-2 border-dBlack "
                   onChange={(e) => {
                     setLang(e.target.value);
                   }}
@@ -194,7 +248,7 @@ export default function SignUp() {
           </div>
           <button
             to="/register"
-            className=" mt-6 p-3 px-8 pt-2 text-white bg-deepBlue rounded-full baseline hover:bg-lgBlue hover:text-deepBlue mx-auto justify-center"
+            className="mt-6 p-3 px-8 pt-2 text-white bg-deepBlue rounded-full baseline hover:bg-lgBlue hover:text-deepBlue mx-auto justify-center"
           >
             SIGN UP
           </button>

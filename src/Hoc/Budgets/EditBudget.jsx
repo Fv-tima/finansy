@@ -31,7 +31,7 @@ export default function EditBudget() {
       <div className=" ml-10 flex flex-col w-2/3 text-center space-y-4 md:w-[300px] sm:w-3/3">
         <div className="flex flex-col justify-start p-8 shadow-lg rounded-xl space-y-3">
           <h3 className="text-2xl font-bold">Edit budget</h3>
-          <label className="text-dBlack font-bold text-left">Name</label>
+          <label htmlFor="name" className="text-dBlack font-bold text-left">Name</label>
           <input
             type="text"
             onChange={(e) => {
@@ -39,7 +39,7 @@ export default function EditBudget() {
             }}
             className="rounded-full p-2 flex-1 p-2 border-solid border-2 border-dBlack text-dBlack "
           />
-          <label className="text-dBlack font-bold text-left">Amount</label>
+          <label htmlFor="amount" className="text-dBlack font-bold text-left">Amount</label>
           <input
             type="number"
             onChange={(e) => {

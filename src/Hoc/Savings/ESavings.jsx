@@ -1,22 +1,20 @@
 import React from "react";
 import SideBar from "../../components/SideBar";
-import RHead from "./RHead";
-import Records from "./Records";
-import ETrans from "./ETrans";
+import ESHead from "./ESHead";
+import EditSavings from "./EditSavings";
+import AddSavings from "./AddSavings";
 import Footer from "../../components/Footer";
 
-export default function ERecords() {
+export default function ESavings() {
   return (
     <div>
       <div className="grid md:space-x-[200px] space-x-[100px] overflow-x-hidden">
         <SideBar />
         <div>
-          <RHead />
+          <ESHead />
           <div className="flex md:flex-row flex-col">
-            <div className="flex flex-col">
-              <Records />
-            </div>
-            <ETrans />
+            <EditSavings />
+            <AddSavings />
           </div>
         </div>
       </div>

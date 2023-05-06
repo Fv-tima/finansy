@@ -4,7 +4,7 @@ import insta from "../assets/images/insta.png"
 import twitter from "../assets/images/twitter.png"
 export default function Footer() {
   return (
-    <footer className=" mt-8 inset-x-0 bottom-0 flex flex-col-reverse justify-between px-14 py-4 text-ash mx-auto md:flex-row">
+    <footer className=" mt-8 inset-x-0 bottom-0 flex flex-col-reverse justify-between px-14 py-4 text-ash mx-auto md:flex-row ">
       <p className="md: text-center">
         All copyrights reserved | Des and Dev by Scarlet & Fvtima
       </p>

@@ -5,14 +5,14 @@ import Budgets from "../Hoc/Budgets/Budgets";
 import KeyInfo from "../Hoc/Budgets/KeyInfo";
 import Needs from "../Hoc/Budgets/Needs";
 import Wants from "../Hoc/Budgets/Wants";
-import Select from "../components/Select";
+import SelectBud from "../Hoc/Budgets/SelectBud";
 import { onSnapshot, getDocs } from "firebase/firestore";
 import { useCol } from "../context/ColContext";
 
 import Footer from "../components/Footer";
 
 export default function BudgetsPg() {
-  useCol();
+  
   const [openModal, setOpenModal] = useState(false);
 
 
@@ -38,7 +38,7 @@ export default function BudgetsPg() {
       <div className="grid md:space-x-[200px] space-x-[100px] overflow-x-hidden">
         <SideBar />
         <div>
-          <BHead openModal={openModal} setOpenModal={setOpenModal} />
+          <BHead  setOpenModal={setOpenModal} />
           <div className="flex md:flex-row flex-col">
             <Budgets />
             <div className="flex flex-col">
@@ -50,7 +50,7 @@ export default function BudgetsPg() {
         </div>
       </div>
       {openModal ? (
-        <Select openModal={openModal} setOpenModal={setOpenModal} />
+        <SelectBud openModal={openModal} setOpenModal={setOpenModal} />
       ) : (
         ""
       )}

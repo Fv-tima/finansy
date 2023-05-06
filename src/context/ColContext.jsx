@@ -1,7 +1,8 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { db } from "../firebase-config";
 import { useAuth } from "./AuthContext";
-import { query, where, collection, getDocs} from "firebase/firestore";
+import { query, where, collection, getDocs } from "firebase/firestore";
+import { onSnapshot } from "firebase/firestore";
 const ColContext = createContext();
 
 export function useCol() {
@@ -17,7 +18,7 @@ export const ColContextProvider = ({ children }) => {
   const [excCur, setExcCur] = useState("");
   const [defCur, setDefCur] = useState("");
   const [country, setCountry] = useState("");
-  const [fullname, setFullname] = useState("");
+  const [fullName, setFullname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const profileCollectionRef = collection(db, "Profile");
@@ -25,41 +26,68 @@ export const ColContextProvider = ({ children }) => {
 
   //Budget
   const [budgetData, setBudgetData] = useState([]);
+  const [loader, setLoader] = useState(true);
   const [budName, setBudName] = useState("");
   const [budAmt, setBudAmt] = useState("");
   const [budCat, setBudCat] = useState("");
   const budgetCollectionRef = collection(db, "Budget");
-  const bQuery = query(budgetCollectionRef, where("userId", "==", `${uid}`));
 
-  // get budget
-  // const getBudget = async () => {
-  //   try {
-  //     const data = await getDocs(bQuery);
-  //     const budgets = data.docs((budget) => ({
-  //       ...budget.id,
-  //       id: budget.id,
-  //     }));
-  //     setBudgetData(budgets);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
+  useEffect(() => {
+    const bQuery = query(budgetCollectionRef, where("userId", "==", `${uid}`));
+    const newBud = onSnapshot(budgetCollectionRef, (querySnapshot) => {
+      setBudgetData(
+        querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }))
+      );
+    });
+    
+    return () => {
+      newBud();
+      console.log(budgetData.map((doc) =>
+        doc.amount
+      ));
+    }
+  }, [budgetData]);
 
-  // useEffect(() => {
-  //   getBudget();
-  // }, []);
-  
-    onSnapshot(budgetCollectionRef, (snapshot) => {
-    const newBud = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-    console.log(newBud);
-  })
   // Edit Budget
   const [ebudName, setEBudName] = useState("");
   const [ebudAmt, setEBudAmt] = useState("");
   const [ebudCat, setEBudCat] = useState("");
+
+  // add records
+  const [recordData, setRecordData] = useState([]);
+
+  const [recName, setRecName] = useState("");
+  const [recAmt, setRecAmt] = useState("");
+  const [recCat, setRecCat] = useState("");
+  const recordCollectionRef = collection(db, "Record");
+  const rQuery = query(recordCollectionRef, where("userId", "==", `${uid}`));
+
+  useEffect(() => {
+    const getRecord = async () => {
+      try {
+        onSnapshot(recordCollectionRef, (snapshot) => {
+          const newRec = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          setRecordData(newRec);
+          console.log(recordData);
+          setLoader(false);
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getRecord();
+  }, []);
+
+  // add savings
+  const [savAmt, setSavAmt] = useState("");
+  const savingsCollectionRef = collection(db, "Savings");
+  const sQuery = query(savingsCollectionRef, where("userId", "==", `${uid}`));
 
   const value = {
     lang,
@@ -72,7 +100,7 @@ export const ColContextProvider = ({ children }) => {
     setDefCur,
     country,
     setCountry,
-    fullname,
+    fullName,
     setFullname,
     email,
     setEmail,
@@ -92,9 +120,19 @@ export const ColContextProvider = ({ children }) => {
     setEBudCat,
     budgetCollectionRef,
     profileCollectionRef,
-    bQuery,
     budgetData,
     setBudgetData,
+    loader,
+    recName,
+    recAmt,
+    recCat,
+    setRecName,
+    setRecAmt,
+    setRecCat,
+    recordCollectionRef,
+    setSavAmt,
+    savAmt,
+    savingsCollectionRef,
   };
 
   return <ColContext.Provider value={value}>{children}</ColContext.Provider>;

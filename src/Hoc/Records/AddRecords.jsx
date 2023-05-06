@@ -1,17 +1,17 @@
 import React from "react";
-import SideBar from "../components/SideBar";
-import RHead from "../Hoc/Records/RHead";
-import Records from "../Hoc/Records/Records";
-import AddTrans from "../Hoc/Records/AddTrans";
-import Footer from "../components/Footer";
+import SideBar from "../../components/SideBar";
+import ERHead from "./ERHead";
+import Records from "./Records";
+import AddTrans from "./AddTrans";
+import Footer from "../../components/Footer";
 
-export default function RecordPg() {
+export default function AddRecords() {
   return (
     <div>
       <div className="grid md:space-x-[200px] space-x-[100px] overflow-x-hidden">
         <SideBar />
         <div>
-          <RHead />
+          <ERHead />
           <div className="flex md:flex-row flex-col">
             <div className="flex flex-col">
               <Records />

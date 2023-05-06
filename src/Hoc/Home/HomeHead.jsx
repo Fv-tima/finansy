@@ -1,9 +1,9 @@
-import React, {useState} from "react";
+import React from "react";
 import toggle from "../../assets/images/Act.png";
 import plus from "../../assets/images/plus.png"
 
 
-export default function HomeHead({openModal, setOpenModal}) {
+export default function HomeHead({ setOpenModal}) {
      function add() {
        setOpenModal(true);
      }

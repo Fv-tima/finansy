@@ -2,18 +2,23 @@ import plus from "../../assets/images/plus.png";
 import back from "../../assets/images/back.png";
 import { Link } from "react-router-dom";
 
-export default function ProfileHead() {
+export default function ProfileHead({setOpenModal}) {
+   function add() {
+     setOpenModal(true);
+   }
   return (
     <div>
       <div className="p-5 flex flex-row justify-between items-center">
         <h2 className="text-3xl text-deepBlue font-bold-200">Profile</h2>
         <div className="flex space-x-3">
-          <button className="border-solid border-2 border-deepNlue rounded-full px-5 ">
-            <img src={back} />
+          <button className="border-solid border-2 border-deepBlue rounded-full px-5 ">
+            <Link to="/home">
+              <img src={back} />
+            </Link>
           </button>
-          <Link to="/eprofile" className="bg-deepBlue rounded-full p-4">
+          <button onClick={add} className="bg-deepBlue rounded-full p-4">
             <img src={plus} />
-          </Link>
+          </button>
         </div>
       </div>
     </div>

@@ -1,14 +1,14 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import SideBar from "../components/SideBar";
 import RHead from "../Hoc/Records/RHead";
 import Records from "../Hoc/Records/Records";
 import Calendars from "../Hoc/Records/Calendar";
 import Trans from "../Hoc/Records/Trans";
-import Select from "../components/Select";
+import SelectRec from "../Hoc/Records/SelectRec";
 import Footer from "../components/Footer";
 
 export default function RecordPg() {
-     const [openModal, setOpenModal] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
   return (
     <div>
       <div className="grid md:space-x-[200px] space-x-[100px] overflow-x-hidden">
@@ -17,7 +17,7 @@ export default function RecordPg() {
           <RHead openModal={openModal} setOpenModal={setOpenModal} />
           <div className="flex md:flex-row flex-col">
             <div className="flex flex-col">
-              <Calendars/>
+              <Calendars />
               <Records />
             </div>
             <Trans />
@@ -25,7 +25,7 @@ export default function RecordPg() {
         </div>
       </div>
       {openModal ? (
-        <Select openModal={openModal} setOpenModal={setOpenModal} />
+        <SelectRec openModal={openModal} setOpenModal={setOpenModal} />
       ) : (
         ""
       )}

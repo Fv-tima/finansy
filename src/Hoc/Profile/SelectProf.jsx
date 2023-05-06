@@ -1,9 +1,9 @@
 import React from "react";
-import edit from "../assets/images/Edit.png";
-import cancel from "../assets/images/4.png";
+import edit from "../../assets/images/Edit.png";
+import cancel from "../../assets/images/4.png";
 import { Link } from "react-router-dom";
 
-export default function Select({ openModal, setOpenModal }) {
+export default function SelectProf({ openModal, setOpenModal }) {
   function add() {
     setOpenModal(false);
   }
@@ -22,13 +22,9 @@ export default function Select({ openModal, setOpenModal }) {
 
       <h2 className="text-1xl font-bold text-dBlack">Select section</h2>
       <div className="flex space-x-8">
-        <Link to="/ebudget" className="flex space-x-2">
+        <Link to="/eprofile" className="flex space-x-2">
           <img src={edit} />
           <h2 className="text-1xl text-lgBlack">Edit</h2>
-        </Link>
-        <Link to="/sbudget" className="flex space-x-2">
-          <img src={edit} />
-          <h2 className="text-1xl text-lgBlack">Add</h2>
         </Link>
       </div>
     </div>

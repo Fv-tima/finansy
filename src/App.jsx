@@ -3,11 +3,14 @@ import Landing from "./pages/Landing";
 import LoginPg from "./pages/LoginPg";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
-import EditProfile from "./pages/EditProfile";
+import EditProfile from "./pages/EditProfile"; 
 import BudgetsPg from "./pages/BudgetsPg";
 import EBudgets from "./Hoc/Budgets/EBudgets";
 import AddBudgets from "./Hoc/Budgets/AddBudgets";
 import RecordPg from "./pages/RecordPg";
+import AddRecords from "./Hoc/Records/AddRecords";
+import ERecords from "./Hoc/Records/ERecords";
+import ESavings from "./Hoc/Savings/Esavings";
 import SavingsPg from "./pages/SavingsPg";
 import Glossary from "./pages/Glossary";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -53,16 +56,28 @@ function App() {
     },
     {
       path: "/sBudget",
-      element: <AddBudgets />
+      element: <AddBudgets />,
+    },
+    {
+      path: "/arecords",
+      element: <AddRecords />,
+    },
+    {
+      path: "/erecords",
+      element: <ERecords />,
     },
     {
       path: "/records",
-      element: <RecordPg/>
+      element: <RecordPg />,
     },
     {
       path: "/savings",
-      element: <SavingsPg />
+      element: <SavingsPg />,
     },
+    {
+      path:"/esavings",
+      element: <ESavings/>
+    }
   ]);
   return (
     <div>

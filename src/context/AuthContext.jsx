@@ -38,11 +38,11 @@ export const AuthContextProvider = ({ children }) => {
     return signInWithPopup(auth, fbProvider);
   }
 
-  function signUpWithApple(){
-    return signInWithPopup(auth, appleProvider)
+  function signUpWithApple() {
+    return signInWithPopup(auth, appleProvider);
   }
 
-  const userId = currentUser?.uid
+  const userId = currentUser?.uid;
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
@@ -58,7 +58,7 @@ export const AuthContextProvider = ({ children }) => {
     signUp,
     signUpWithGoogle,
     signUpWithFb,
-    signUpWithApple
+    signUpWithApple,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

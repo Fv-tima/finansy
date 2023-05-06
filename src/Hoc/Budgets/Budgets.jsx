@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useCol } from "../../context/ColContext";
-import { Pie } from "react-chartjs-2";
-import { Chart } from "chart.js";
+import { Doughnut } from "react-chartjs-2";
+import  "chart.js/auto";
 
 export default function Budgets() {
-  const { budgetData } = useCol;
+  const { budgetData, loader } = useCol;
   return (
     <div className="shadow-lg p-5 m-5 rounded-lg w-[400px] h-[400px]">
       <h2 className="text-2xl text-deepBlue font-bold">Budgets</h2>
-      {budgetData.length === 0 ? <Emptybudgets /> : <BudgetsCharts />}
+      {budgetData?.map((data)=>data.category)}
     </div>
   );
 }
@@ -22,13 +22,14 @@ export function Emptybudgets() {
 }
 
 export function BudgetsCharts() {
-  const { budgetData } = useCol;
+  const { budgetData, loader } = useCol;
+  const ref = useRef()
   const [chartData, setChartData] = useState({
-    labels: budgetData.map((data) => data.name),
+    labels: "Budgets",
     datasets: [
       {
-        label: "Budgets",
-        data: budgetData.map((data) => data.amount),
+        label: [budgetData?.map((data) => data.name)],
+        data: [budgetData?.map((data) => data.category)],
         backgroundColor: [
           " hsl(0, 0%, 82%)",
           "hsl(198, 71%, 81%)",
@@ -38,5 +39,5 @@ export function BudgetsCharts() {
       },
     ],
   });
-  return <Pie data={chartData} />;
+  return <Doughnut ref={ref} data={chartData}></Doughnut>;
 }

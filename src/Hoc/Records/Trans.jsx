@@ -18,3 +18,12 @@ export function EmptyTrans() {
     </div>
   );
 }
+
+// export function Trans() {
+//   const { recordData, loader } = useCol
+//   return (
+//     <div className="flex flex-col">
+//       {recordData.map}
+//    </div>
+//   )
+// }
